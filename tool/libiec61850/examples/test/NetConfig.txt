@@ -1,0 +1,20 @@
+
+#attack attack-eth0:router-eth1
+#ied1 ied1-eth0:s1-eth1
+#ied2 ied2-eth0:s1-eth2
+#router router-eth0:s1-eth3 router-eth1:attack-eth0
+#s1 lo:  s1-eth1:ied1-eth0 s1-eth2:ied2-eth0 s1-eth3:router-eth0
+
+
+router ifconfig router-eth1 192.168.1.1 netmask 255.255.255.0
+router ifconfig router-eth0 192.168.2.1 netmask 255.255.255.0
+router sysctl net.ipv4.ip_forward=1
+
+attack ifconfig attack-eth0 192.168.1.2 netmask 255.255.255.0
+attack route add default gw 192.168.1.1
+
+ied1 ifconfig ied1-eth0 192.168.2.10 netmask 255.255.255.0
+ied1 route add default gw 192.168.2.1
+
+ied2 ifconfig ied2-eth0 192.168.2.20 netmask 255.255.255.0
+ied2 route add default gw 192.168.2.1
